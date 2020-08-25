@@ -5,7 +5,7 @@ contract CampaignFactory {
     
     function createCampaign(uint minimum) public {
         address newCampaign = new Campaign(minimum, msg.sender);
-        deployedCampaigns.push(newCampaign)
+        deployedCampaigns.push(newCampaign);
     }
     
     function getDeployedCampaigns() public view returns(address[]) {
@@ -30,14 +30,16 @@ contract Campaign {
     mapping(address => bool) approvers;
     uint public approversCount;
     
+   
+    
+    function Campaign(uint minimum, address creator) public {
+        manager = creator;
+        minimumContribution = minimum;
+    }
+
     modifier restricted() {
         require(msg.sender == manager);
         _;
-    }
-    
-    constructor(uint minimum, address creator) public {
-        manager = creator;
-        minimumContribution = minimum;
     }
     
     function contribute() public payable {
