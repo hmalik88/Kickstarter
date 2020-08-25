@@ -1,0 +1,16 @@
+{
+  "name": "kickstarter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^8.1.1",
+    "solc": "^0.4.17",
+    "web3": "^1.0.0-beta.26"
+  }
+}
