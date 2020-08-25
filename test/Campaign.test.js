@@ -41,11 +41,38 @@ describe('Campaigns', () => {
     it('requires a minimum contribution', async () => {
         let error;
         try {
-            await campaign.methods.contribute().send({from: accounts[1], value: 200});
+            await campaign.methods.contribute().send({from: accounts[1], value: 50});
         } catch (err) {
             error = err;
         }
         assert(error !== undefined);
+    })
+
+    it('allows a manager to create a request', async () => {
+        await campaign.methods
+            .createRequest('Buy batteries', '100', accounts[1])
+            .send({
+                from: accounts[0],
+                gas: '1000000'
+            });
+        const request = await campaign.methods.requests(0).call();
+        assert.equal('Buy batteries', request.description);
+    })
+
+    it('processes requests', async () => {
+        await campaign.methods.contribute().send({
+            from: accounts[0],
+            value: web3.utils.toWei('10', 'ether')
+        });
+        await campaign.methods
+            .createRequest('A', web3.utils.toWei('5', 'ether'), accounts[1])
+            .send({from: accounts[0], gas: '1000000'});
+        await campaign.methods.approvalRequest(0).send({from: accounts[0], gas: '1000000'});
+        await campaign.methods.finalizeRequest(0).send({from: accounts[0], gas: '1000000'});
+        let bal = await web3.eth.getBalance(accounts[1]);
+        bal = web3.utils.fromWei(balS, 'ether');
+        bal = parseFloat(bal);
+        assert(bal > 104);
     })
 
 })
