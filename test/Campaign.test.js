@@ -38,4 +38,14 @@ describe('Campaigns', () => {
         assert(isContributor);
     })
 
+    it('requires a minimum contribution', async () => {
+        let error;
+        try {
+            await campaign.methods.contribute().send({from: accounts[1], value: 200});
+        } catch (err) {
+            error = err;
+        }
+        assert(error !== undefined);
+    })
+
 })
