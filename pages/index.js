@@ -15,7 +15,11 @@ export default class CampaignIndex extends React.Component {
         const items = this.props.campaigns.map(address => {
             return {
                 header: address,
-                description: <a>View Campaign</a>,
+                description: (
+                    <Link route={`/campaigns/${address}`}>
+                        <a>View Campaign</a>
+                    </Link>
+                ),
                 fluid: true
             }
         })
