@@ -24,22 +24,27 @@ export default class RequestRow extends React.Component {
     render() {
         const { Row, Cell } = Table;
         const { id, request, approversCount } = this.props;
+        const readyToFinalize = request.approvalCount > approversCount / 2;
         return(
-           <Row>
+           <Row disabled={request.complete} positive={readyToFinalize && !request.complete}>
                <Cell>{id}</Cell>
                <Cell>{request.description}</Cell>
                <Cell>{web3.utils.fromWei(request.value, 'ether')}</Cell>
                <Cell>{request.recipient}</Cell>
                <Cell>{request.approvalCount} / {approversCount}</Cell>
                <Cell>
+                   {request.complete ? null : (
                    <Button color="green" basic onClick={this.onApprove}>
                        Approve
-                   </Button>
+                   </Button>)
+                    }       
                </Cell>
                <Cell>
+                   {request.complete ? null : (
                    <Button color="teal" basic onClick={this.onFinalize}>
                        Finalize
-                   </Button>
+                   </Button>)
+                    }
                </Cell>
            </Row>
         )
